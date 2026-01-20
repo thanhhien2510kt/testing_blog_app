@@ -1,0 +1,128 @@
+/* Main Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Layout Structure */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Ensure the main container fills remaining vertical space */
+body>.container-fluid {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the row inside the main container also stretches */
+body>.container-fluid>.row {
+    flex: 1;
+}
+
+/* Ensure sidebar takes full height of its parent row */
+.sidebar {
+    min-height: 100%;
+    background-color: #fff;
+    /* Ensure white background covers full height */
+}
+
+/* Ensure main content area stretches */
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #555;
+    margin-right: 15px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #0d6efd !important;
+}
+
+/* Home Banner */
+.bg-banner {
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8));
+    pointer-events: none;
+}
+
+.bg-banner>div {
+    position: relative;
+    z-index: 1;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.2s;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+    font-size: 1.25rem;
+}
+
+footer {
+    background-color: #1a1e21;
+    flex-shrink: 0;
+}
+
+/* Custom Badges for Admin Table */
+.bg-success-subtle {
+    background-color: #d1e7dd !important;
+    color: #0f5132 !important;
+}
+
+.bg-secondary-subtle {
+    background-color: #e2e3e5 !important;
+    color: #41464b !important;
+}
+
+.bg-primary-subtle {
+    background-color: #cfe2ff !important;
+    color: #084298 !important;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+/* CKEditor Custom Height */
+.ck-editor__editable_inline {
+    min-height: 400px;
+}
