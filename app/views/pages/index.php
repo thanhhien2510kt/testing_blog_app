@@ -13,9 +13,27 @@
     <!-- Tags/Filters -->
     <div class="d-flex gap-2 flex-wrap mb-5 justify-content-center">
         <a href="<?php echo URLROOT; ?>" class="btn btn-dark rounded-pill px-4">Tất cả</a>
-        <?php if(isset($data['categories'])) : ?>
-            <?php foreach($data['categories'] as $category) : ?>
-                <a href="<?php echo URLROOT; ?>/pages/category/<?php echo $category->slug; ?>" class="btn btn-light rounded-pill px-4"><?php echo $category->name; ?></a>
+        <?php if(isset($data['nav_categories'])) : ?>
+            <?php foreach($data['nav_categories'] as $category) : ?>
+                <?php 
+                    $displayName = trim(str_replace('Testing', '', $category->name));
+                ?>
+                <?php if(!empty($category->children)) : ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light rounded-pill px-4 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $displayName; ?>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/pages/category/<?php echo $category->slug; ?>">Tất cả <?php echo $displayName; ?></a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <?php foreach($category->children as $child) : ?>
+                                <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/pages/category/<?php echo $child->slug; ?>"><?php echo $child->name; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php else : ?>
+                    <a href="<?php echo URLROOT; ?>/pages/category/<?php echo $category->slug; ?>" class="btn btn-light rounded-pill px-4"><?php echo $displayName; ?></a>
+                <?php endif; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
@@ -45,9 +63,9 @@
                                         <?php echo $post->title; ?>
                                     </a>
                                 </h4>
-                                <p class="card-text text-muted"><?php echo substr($post->content, 0, 150); ?>...</p>
+                                <p class="card-text text-muted"><?php echo substr(strip_tags($post->content), 0, 150); ?>...</p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <p class="card-text mb-0"><small class="text-muted"><i class="fas fa-user-circle"></i> <?php echo $post->name; ?> &bull; <?php echo date('d/m/Y', strtotime($post->postCreated)); ?></small></p>
+                                    <p class="card-text mb-0"><small class="text-muted"><i class="fas fa-user-circle"></i> <?php echo $post->userName; ?> &bull; <?php echo date('d/m/Y', strtotime($post->postCreated)); ?></small></p>
                                     <a href="<?php echo URLROOT; ?>/posts/show/<?php echo $post->postId; ?>" class="btn btn-sm btn-outline-primary rounded-pill">Đọc thêm</a>
                                 </div>
                             </div>

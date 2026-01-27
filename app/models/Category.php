@@ -23,6 +23,20 @@ class Category extends Model {
         return $row;
     }
 
+    public function getCategoryByName($name) {
+        $this->db->query('SELECT * FROM categories WHERE name = :name');
+        $this->db->bind(':name', $name);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function getCategoryBySlug($slug) {
+        $this->db->query('SELECT * FROM categories WHERE slug = :slug');
+        $this->db->bind(':slug', $slug);
+        $row = $this->db->single();
+        return $row;
+    }
+
     public function addCategory($data) {
         $this->db->query('INSERT INTO categories (name, slug, parent_id) VALUES(:name, :slug, :parent_id)');
         $this->db->bind(':name', $data['name']);

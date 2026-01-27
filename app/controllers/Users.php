@@ -84,7 +84,4 @@ class Users extends Controller {
     }
 }
 
-// Redirect Helper function (if not already defined in helpers)
-function redirect($page) {
-    header('location: ' . URLROOT . '/' . $page);
-}
+

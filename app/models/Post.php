@@ -8,6 +8,7 @@ class Post extends Model {
                         users.id as userId,
                         posts.created_at as postCreated,
                         users.created_at as userCreated,
+                        users.name as userName,
                         categories.name as categoryName
                         FROM posts
                         INNER JOIN users ON posts.author_id = users.id
@@ -54,6 +55,13 @@ class Post extends Model {
         return $row;
     }
 
+    public function getPostByTitle($title) {
+        $this->db->query('SELECT * FROM posts WHERE title = :title');
+        $this->db->bind(':title', $title);
+        $row = $this->db->single();
+        return $row;
+    }
+
     public function getCategories() {
         $this->db->query('SELECT * FROM categories');
         $results = $this->db->resultSet();
@@ -75,7 +83,8 @@ class Post extends Model {
                         posts.id as postId,
                         users.id as userId,
                         posts.created_at as postCreated,
-                        users.created_at as userCreated
+                        users.created_at as userCreated,
+                        users.name as userName
                         FROM posts
                         INNER JOIN users
                         ON posts.author_id = users.id
@@ -95,6 +104,7 @@ class Post extends Model {
                         users.id as userId,
                         posts.created_at as postCreated,
                         users.created_at as userCreated,
+                        users.name as userName,
                         categories.name as categoryName
                         FROM posts
                         INNER JOIN users ON posts.author_id = users.id
@@ -108,6 +118,60 @@ class Post extends Model {
         
         $results = $this->db->resultSet();
         return $results;
+    }
+
+    public function getFilteredPosts($filters = [], $limit = 100, $page = 1) {
+        $offset = ($page - 1) * $limit;
+        
+        $sql = 'SELECT *,
+                posts.id as postId,
+                users.id as userId,
+                posts.created_at as postCreated,
+                users.created_at as userCreated,
+                users.name as userName,
+                categories.name as categoryName
+                FROM posts
+                INNER JOIN users ON posts.author_id = users.id
+                LEFT JOIN post_categories ON posts.id = post_categories.post_id
+                LEFT JOIN categories ON post_categories.category_id = categories.id
+                WHERE 1=1';
+        
+        // Filter by Search Term (Title)
+        if (!empty($filters['search'])) {
+            $sql .= ' AND posts.title LIKE :search';
+        }
+        
+        // Filter by Category
+        if (!empty($filters['category_id'])) {
+             // If we want exact category match (considering post can have multiple categories? Model structure joins post_categories)
+             // The join is LEFT JOIN, so if we filter by category_id, we check the joined table.
+             $sql .= ' AND categories.id = :category_id';
+        }
+
+        // Filter by Status
+        if (!empty($filters['status'])) {
+            $sql .= ' AND posts.status = :status';
+        }
+
+        $sql .= ' GROUP BY posts.id ORDER BY posts.created_at DESC LIMIT :limit OFFSET :offset';
+
+        $this->db->query($sql);
+        
+        // Bind values
+        if (!empty($filters['search'])) {
+            $this->db->bind(':search', '%' . $filters['search'] . '%');
+        }
+        if (!empty($filters['category_id'])) {
+            $this->db->bind(':category_id', $filters['category_id']);
+        }
+        if (!empty($filters['status'])) {
+            $this->db->bind(':status', $filters['status']);
+        }
+
+        $this->db->bind(':limit', $limit);
+        $this->db->bind(':offset', $offset);
+
+        return $this->db->resultSet();
     }
 
     public function addPost($data){

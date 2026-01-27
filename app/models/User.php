@@ -47,6 +47,61 @@ class User extends Model {
         return $row;
     }
 
+    // Register User
+    public function register($data) {
+        $this->db->query('INSERT INTO users (name, email, password) VALUES(:name, :email, :password)');
+        // Bind values
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':password', $data['password']);
+
+        // Execute
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Add User (Admin)
+    public function addUser($data) {
+        $this->db->query('INSERT INTO users (name, email, password, role) VALUES(:name, :email, :password, :role)');
+        // Bind values
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':password', $data['password']);
+        $this->db->bind(':role', $data['role']);
+
+        // Execute
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Update User
+    public function updateUser($data) {
+        if(!empty($data['password'])) {
+            $this->db->query('UPDATE users SET name = :name, email = :email, password = :password, role = :role WHERE id = :id');
+            $this->db->bind(':password', $data['password']);
+        } else {
+             $this->db->query('UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id');
+        }
+        
+        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':role', $data['role']);
+
+        // Execute
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function deleteUser($id) {
         $this->db->query('DELETE FROM users WHERE id = :id');
         $this->db->bind(':id', $id);

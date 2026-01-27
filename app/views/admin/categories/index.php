@@ -27,10 +27,18 @@
                         </div>
                         <div class="card-body">
                             <!-- Helper Form for Quick Add (Optional, keeping Simple) -->
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Tên danh mục mới..." disabled title="Use 'Add' button for now">
-                                <a href="<?php echo URLROOT; ?>/admin/add_category" class="btn btn-primary fw-bold">+ Thêm</a>
+                            <!-- Helper Form for Quick Add (Optional, keeping Simple) -->
+                            <div class="d-flex mb-3">
+                                <div class="input-group me-2">
+                                    <input type="text" class="form-control" placeholder="Tên danh mục mới..." disabled title="Use 'Add' button for now">
+                                    <a href="<?php echo URLROOT; ?>/admin/add_category" class="btn btn-primary fw-bold">+ Thêm</a>
+                                </div>
+                                <a href="<?php echo URLROOT; ?>/admin/export_categories" class="btn btn-outline-secondary me-2" title="Export"><i class="fas fa-file-export"></i></a>
+                                <button type="button" class="btn btn-outline-success" onclick="document.getElementById('importCatFile').click()" title="Import"><i class="fas fa-file-import"></i></button>
                             </div>
+                            <form action="<?php echo URLROOT; ?>/admin/import_categories" method="POST" enctype="multipart/form-data" id="importCatForm" class="d-none">
+                                <input type="file" id="importCatFile" name="import_file" onchange="document.getElementById('importCatForm').submit()" accept=".csv">
+                            </form>
 
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle">

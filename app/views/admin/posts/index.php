@@ -29,36 +29,55 @@
             <!-- Filters Bar -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-3">
+            <!-- Filters Bar -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-3">
+                    <!-- Main Filter Form (declarative) -->
+                    <form id="filterForm" action="<?php echo URLROOT; ?>/admin/posts" method="GET"></form>
+
                     <div class="row g-2 align-items-center">
                         <div class="col-md-4">
                             <div class="input-group">
-                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
-                                <input type="text" class="form-control border-start-0 ps-0" placeholder="Tìm kiếm theo tiêu đề...">
+                                <button class="btn btn-light border border-end-0" type="submit" form="filterForm"><i class="fas fa-search text-muted"></i></button>
+                                <input type="text" name="search" form="filterForm" class="form-control border-start-0 ps-0" placeholder="Tìm kiếm theo tiêu đề..." value="<?php echo isset($data['filters']['search']) ? $data['filters']['search'] : ''; ?>">
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <select class="form-select">
-                                <option selected>Tất cả chủ đề</option>
+                            <select name="category" form="filterForm" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">Tất cả chủ đề</option>
                                 <?php if(isset($data['categories'])) : ?>
                                     <?php foreach($data['categories'] as $category) : ?>
-                                        <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                        <option value="<?php echo $category->id; ?>" <?php echo (isset($data['filters']['category_id']) && $data['filters']['category_id'] == $category->id) ? 'selected' : ''; ?>><?php echo $category->name; ?></option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <select class="form-select">
-                                <option selected>Tất cả trạng thái</option>
-                                <option value="published">Published</option>
-                                <option value="draft">Draft</option>
+                        <div class="col-md-2">
+                            <select name="status" form="filterForm" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="published" <?php echo (isset($data['filters']['status']) && $data['filters']['status'] == 'published') ? 'selected' : ''; ?>>Published</option>
+                                <option value="draft" <?php echo (isset($data['filters']['status']) && $data['filters']['status'] == 'draft') ? 'selected' : ''; ?>>Draft</option>
                             </select>
                         </div>
-                        <div class="col-md-2 text-end">
-                            <button class="btn btn-outline-secondary w-100">
-                                <i class="fas fa-download"></i> Export
-                            </button>
+                        <div class="col-md-3 text-end">
+                            <div class="d-flex gap-2 justify-content-end">
+                                <!-- Import Form -->
+                                <form action="<?php echo URLROOT; ?>/admin/import_posts" method="POST" enctype="multipart/form-data">
+                                    <input type="file" name="import_file" id="importFile" class="d-none" accept=".csv" onchange="this.form.submit()">
+                                    <label for="importFile" class="btn btn-outline-success" title="Import từ CSV">
+                                        <i class="fas fa-file-upload"></i> Import
+                                    </label>
+                                </form>
+
+                                <!-- Export Button linked to filterForm -->
+                                <button type="submit" form="filterForm" name="action" value="export" class="btn btn-outline-secondary" title="Export ra CSV">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
                 </div>
             </div>
 

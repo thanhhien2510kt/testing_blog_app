@@ -12,21 +12,28 @@
         <li class="nav-item">
           <a class="nav-link active" href="<?php echo URLROOT; ?>">Trang chủ</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Automation</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Manual</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">API Testing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Công cụ</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Tutorials</a>
-        </li>
+        <?php if(isset($data['nav_categories'])) : ?>
+            <?php foreach($data['nav_categories'] as $category) : ?>
+                <?php if(!empty($category->children)) : ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown<?php echo $category->id; ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $category->name; ?>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown<?php echo $category->id; ?>">
+                            <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/pages/category/<?php echo $category->slug; ?>">Tất cả <?php echo $category->name; ?></a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <?php foreach($category->children as $child) : ?>
+                                <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/pages/category/<?php echo $child->slug; ?>"><?php echo $child->name; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                <?php else : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo URLROOT; ?>/pages/category/<?php echo $category->slug; ?>"><?php echo trim(str_replace('Testing', '', $category->name)); ?></a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </ul>
       
       <div class="d-flex align-items-center">
