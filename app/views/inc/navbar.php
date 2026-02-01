@@ -49,9 +49,7 @@
                     <i class="fas fa-user text-primary"></i> <?php echo $_SESSION['user_name']; ?>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <?php if($_SESSION['user_role'] == 'admin') : ?>
                         <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/admin/index">Dashboard</a></li>
-                    <?php endif; ?>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/users/logout">Đăng xuất</a></li>
                 </ul>

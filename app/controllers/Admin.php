@@ -529,6 +529,11 @@ class Admin extends Controller {
             ];
 
             if(empty($data['name'])){ $data['name_err'] = 'Please enter name'; }
+            
+             // Check for duplicate slug
+             if($this->categoryModel->getCategoryBySlug($data['slug'])){
+                 $data['name_err'] = 'Category name already exists';
+             }
 
             if(empty($data['name_err'])){
                 if($this->categoryModel->addCategory($data)){
@@ -567,6 +572,12 @@ class Admin extends Controller {
             ];
 
             if(empty($data['name'])){ $data['name_err'] = 'Please enter name'; }
+            
+             // Check for duplicate slug (excluding current category)
+             $existing_cat = $this->categoryModel->getCategoryBySlug($data['slug']);
+             if($existing_cat && $existing_cat->id != $id){
+                 $data['name_err'] = 'Category name already exists';
+             }
 
             if(empty($data['name_err'])){
                 if($this->categoryModel->updateCategory($data)){

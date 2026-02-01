@@ -51,6 +51,7 @@
                     </div>
 
                     <input type="submit" class="btn btn-success" value="Submit">
+                    <button type="button" class="btn btn-secondary ms-2" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Lên đầu trang</button>
                 </form>
             </div>
          </main>
